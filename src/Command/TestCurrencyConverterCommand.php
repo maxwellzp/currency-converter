@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Providers\BinanceProvider;
+use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -28,8 +29,11 @@ class TestCurrencyConverterCommand extends Command
 //        $privatBankProvider = new PrivatBankProvider();
 //        $privatBankProvider->getPrice();
 
-        $binanceProvider = new BinanceProvider();
-        $binanceProvider->getPrice();
+//        $binanceProvider = new BinanceProvider();
+//        $binanceProvider->getPrice();
+
+        $nbuProvider = new NBUProvider();
+        $nbuProvider->getPrice();
 
 
         return Command::SUCCESS;

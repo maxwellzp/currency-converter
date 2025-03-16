@@ -6,10 +6,9 @@ namespace App\Providers;
 
 use GuzzleHttp\Client;
 
-class PrivatBankProvider implements PriceProviderInterface
+class NBUProvider implements PriceProviderInterface
 {
-    const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
-
+    const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
     public function getPrice(): string
     {
         $client = new Client();

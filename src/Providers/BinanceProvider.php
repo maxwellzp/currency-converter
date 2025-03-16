@@ -6,7 +6,7 @@ namespace App\Providers;
 
 use GuzzleHttp\Client;
 
-class BinanceProvider
+class BinanceProvider implements PriceProviderInterface
 {
     const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
 
