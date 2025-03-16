@@ -6,7 +6,7 @@ namespace App\Service;
 
 use Predis\Client;
 
-class PriceUpdater
+class PriceUpdaterService
 {
     public function __construct(private Client $predisClient)
     {
