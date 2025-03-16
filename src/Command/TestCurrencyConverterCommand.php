@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Providers\BinanceProvider;
+use App\Providers\MonobankProvider;
 use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -32,8 +33,11 @@ class TestCurrencyConverterCommand extends Command
 //        $binanceProvider = new BinanceProvider();
 //        $binanceProvider->getPrice();
 
-        $nbuProvider = new NBUProvider();
-        $nbuProvider->getPrice();
+//        $nbuProvider = new NBUProvider();
+//        $nbuProvider->getPrice();
+
+        $monobankProvider = new MonobankProvider();
+        $monobankProvider->getPrice();
 
 
         return Command::SUCCESS;
