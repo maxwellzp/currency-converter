@@ -19,4 +19,14 @@ class BinanceProvider implements PriceProviderInterface
 
         return "0";
     }
+
+    public function getName(): string
+    {
+        return "binance";
+    }
+
+    public function getAvailablePairs(): array
+    {
+        return ['BTC-USD'];
+    }
 }

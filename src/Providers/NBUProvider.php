@@ -19,4 +19,14 @@ class NBUProvider implements PriceProviderInterface
 
         return "0";
     }
+
+    public function getName(): string
+    {
+        return "nbu";
+    }
+
+    public function getAvailablePairs(): array
+    {
+        return [];
+    }
 }

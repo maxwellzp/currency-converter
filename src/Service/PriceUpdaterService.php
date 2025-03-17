@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Providers\PriceProviderInterface;
 use Predis\Client;
 use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 
@@ -17,14 +18,18 @@ class PriceUpdaterService
         $this->predisClient->set('test', '1010');
     }
 
-    public function updateRedisDb(): void
+    public function updateRedisKeys(array $providers): void
     {
-        $this->predisClient->set('btc-usd', '1');
-        $value = $this->predisClient->get('btc-usd');
+        foreach ($providers as $provider) {
+            $this->updatePrice($provider);
+        }
     }
 
-    public function updatePrice(): void
+    public function updatePrice(PriceProviderInterface $provider): void
     {
-
+        foreach ($provider->getAvailablePairs() as $pair) {
+            $price = $provider->getPrice();
+            $this->predisClient->set($pair, $price);
+        }
     }
 }

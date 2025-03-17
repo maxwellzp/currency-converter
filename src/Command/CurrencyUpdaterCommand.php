@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Command;
 
+use App\Providers\BinanceProvider;
+use App\Providers\PrivatBankProvider;
 use App\Service\PriceUpdaterService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,7 +28,10 @@ class CurrencyUpdaterCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->priceUpdater->updatePrice();
+        $this->priceUpdater->updateRedisKeys([
+            new BinanceProvider(),
+            new PrivatBankProvider(),
+        ]);
 
         return Command::SUCCESS;
     }

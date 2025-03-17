@@ -20,4 +20,14 @@ class PrivatBankProvider implements PriceProviderInterface
 
         return "0";
     }
+
+    public function getName(): string
+    {
+        return "privatbank";
+    }
+
+    public function getAvailablePairs(): array
+    {
+        return ['EUR-UAH', 'USD-UAH'];
+    }
 }
