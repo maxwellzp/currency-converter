@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Providers\BinanceProvider;
+use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
 use App\Service\PriceUpdaterService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -29,6 +30,7 @@ class CurrencyUpdaterCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $this->priceUpdater->updateRedisKeys([
+            new NBUProvider(),
             new BinanceProvider(),
             new PrivatBankProvider(),
         ]);
