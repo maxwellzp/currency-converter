@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\CurrencyConverterService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +18,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class CurrencyConverterCommand extends Command
 {
-    public function __construct()
+    public function __construct(
+        private readonly CurrencyConverterService $currencyConverterService
+    )
     {
         parent::__construct();
     }
@@ -40,6 +43,8 @@ class CurrencyConverterCommand extends Command
         $to = $input->getArgument('to');
 
         $io->writeln(sprintf("Convert %d %s to %s.", $amount, $from, $to));
+        $result = $this->currencyConverterService->convert($amount, $from, $to);
+        $io->writeln("result: " . $result);
 
         return Command::SUCCESS;
     }

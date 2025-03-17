@@ -29,18 +29,33 @@ class TestCurrencyConverterCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-//        $privatBankProvider = new PrivatBankProvider();
-//        $privatBankProvider->getPrice();
 
-//        $binanceProvider = new BinanceProvider();
-//        $binanceProvider->getPrice();
+        $json = '{"symbol":"BTCUSDT","price":"83168.32000000"}';
+        $binanceProvider = new BinanceProvider();
+        $r = $binanceProvider->makeApiRequest();
+        echo $r . PHP_EOL;
 
 //        $nbuProvider = new NBUProvider();
 //        $nbuProvider->getPrice();
 
-        $monobankProvider = new MonobankProvider();
-        $monobankProvider->getPrice();
+//        $monobankProvider = new MonobankProvider();
+//        $monobankProvider->getPrice();
 
+//        $json = '[{"ccy":"EUR","base_ccy":"UAH","buy":"44.40000","sale":"45.40000"},{"ccy":"USD","base_ccy":"UAH","buy":"41.00000","sale":"41.60000"}]';
+
+//        $rates = json_decode($json, true);
+//
+//        foreach ($rates as $rate) {
+//            echo '-----------------------' . PHP_EOL;
+//            echo $rate['ccy'] . PHP_EOL;
+//            echo $rate['base_ccy'] . PHP_EOL;
+//            echo $rate['buy'] . PHP_EOL;
+//            echo $rate['sale'] . PHP_EOL;
+//        }
+
+//        $privatBankProvider = new PrivatBankProvider();
+//        $r = $privatBankProvider->parsingResponse($json);
+//        var_dump($r);
 
         return Command::SUCCESS;
     }

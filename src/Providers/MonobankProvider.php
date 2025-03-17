@@ -11,14 +11,17 @@ class MonobankProvider implements PriceProviderInterface
 {
     const API_URL = 'https://api.monobank.ua/bank/currency';
 
-    public function getPrice(): string
-    {
-        $client = new Client();
-        $response = $client->request('GET', self::API_URL);
-        $body = $response->getBody();
-        echo $body . PHP_EOL;
+    private Client $client;
 
-        return "0";
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
+
+    public function getPrices(): array
+    {
+
+        return [];
     }
 
     public function getName(): string

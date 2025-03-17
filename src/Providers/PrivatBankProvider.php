@@ -11,14 +11,36 @@ class PrivatBankProvider implements PriceProviderInterface
 {
     const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
 
-    public function getPrice(): string
-    {
-        $client = new Client();
-        $response = $client->request('GET', self::API_URL);
-        $body = $response->getBody();
-        echo $body . PHP_EOL;
+    private Client $client;
 
-        return "0";
+    public function __construct()
+    {
+        $this->client = new Client();
+    }
+
+    public function makeApiRequest(): string
+    {
+        $response = $this->client->request('GET', self::API_URL);
+        return $response->getBody()->getContents();
+    }
+
+    public function getPrices(): array
+    {
+        $json = $this->makeApiRequest();
+        return $this->parsingResponse($json);
+    }
+
+    public function parsingResponse(string $json): array
+    {
+        $result = [];
+        $rates = json_decode($json, true);
+
+        foreach ($rates as $rate) {
+            $pair = sprintf("%s-%s", $rate['ccy'], $rate['base_ccy']);
+            $price = ($rate['buy'] + $rate['sale']) / 2;
+            $result[] = [$pair, $price];
+        }
+        return $result;
     }
 
     public function getName(): string

@@ -1,0 +1,6 @@
+Binance
+{"symbol":"BTCUSDT","price":"83168.32000000"}
+
+Privatbank:
+[{"ccy":"EUR","base_ccy":"UAH","buy":"44.40000","sale":"45.40000"},{"ccy":"USD","base_ccy":"UAH","buy":"41.00000","sale":"41.60000"}]
+

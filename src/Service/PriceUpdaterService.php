@@ -15,9 +15,13 @@ class PriceUpdaterService
         private Client $predisClient,
     )
     {
-        $this->predisClient->set('test', '1010');
+
     }
 
+    /**
+     * @param PriceProviderInterface[] $providers
+     * @return void
+     */
     public function updateRedisKeys(array $providers): void
     {
         foreach ($providers as $provider) {
@@ -27,8 +31,10 @@ class PriceUpdaterService
 
     public function updatePrice(PriceProviderInterface $provider): void
     {
-        foreach ($provider->getAvailablePairs() as $pair) {
-            $price = $provider->getPrice();
+        $prices = $provider->getPrices();
+
+        foreach ($prices as $price) {
+            [$pair, $price] = $price;
             $this->predisClient->set($pair, $price);
         }
     }
