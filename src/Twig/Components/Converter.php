@@ -9,7 +9,6 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Psr\Log\LoggerInterface;
 
-
 #[AsLiveComponent]
 class Converter
 {
@@ -17,9 +16,8 @@ class Converter
 
     public function __construct(
         private readonly CurrencyConverterService $currencyConverterService,
-        private readonly LoggerInterface          $logger,
-    )
-    {
+        private readonly LoggerInterface $logger,
+    ) {
         $this->logger->critical('Initial values: ', [
             'amount' => $this->amount,
             'currencyFrom' => $this->currencyFrom,

@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 // https://api.privatbank.ua/#p24/exchange
 class PrivatBankProvider implements PriceProviderInterface
 {
-    const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
+    private const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
 
     private Client $client;
 

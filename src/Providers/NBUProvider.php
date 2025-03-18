@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 // https://bank.gov.ua/ua/open-data/api-dev
 class NBUProvider implements PriceProviderInterface
 {
-    const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
+    private const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
     private Client $client;
 

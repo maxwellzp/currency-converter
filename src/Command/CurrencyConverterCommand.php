@@ -20,8 +20,7 @@ class CurrencyConverterCommand extends Command
 {
     public function __construct(
         private readonly CurrencyConverterService $currencyConverterService
-    )
-    {
+    ) {
         parent::__construct();
     }
 

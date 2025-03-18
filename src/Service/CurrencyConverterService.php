@@ -12,9 +12,7 @@ class CurrencyConverterService
     public function __construct(
         #[AutowireInline(class: 'Predis\Client')]
         private Client $predisClient,
-    )
-    {
-
+    ) {
     }
 
     /**

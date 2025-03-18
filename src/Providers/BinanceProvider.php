@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 
 class BinanceProvider implements PriceProviderInterface
 {
-    const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+    private const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
 
     private Client $client;
 

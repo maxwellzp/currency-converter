@@ -62,7 +62,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "psr-detect-violations": "./vendor/bin/phpcs src/ tests/",
+        "psr-auto-correct": "./vendor/bin/phpcbf src/ tests/"
     },
     "conflict": {
         "symfony/symfony": "*"
@@ -76,6 +78,7 @@
     "require-dev": {
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12.0",
+        "squizlabs/php_codesniffer": "*",
         "symfony/maker-bundle": "^1.62",
         "symfony/stopwatch": "7.2.*",
         "symfony/web-profiler-bundle": "7.2.*"
