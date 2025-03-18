@@ -36,6 +36,10 @@ class Converter
     #[LiveProp(writable: true)]
     public string $currencyTo = 'UAH';
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     #[LiveAction]
     public function calculateConversion(): string
     {
@@ -53,16 +57,25 @@ class Converter
         );
     }
 
+    /**
+     * @return string[]
+     */
     public function getFromCurrencies(): array
     {
         return ['BTC', 'USD', 'EUR', 'UAH'];
     }
 
+    /**
+     * @return string[]
+     */
     public function getToCurrencies(): array
     {
         return ['EUR', 'UAH'];
     }
 
+    /**
+     * @return string
+     */
     public function getResultString(): string
     {
         return sprintf("%s %s", $this->calculateConversion(), $this->currencyTo);

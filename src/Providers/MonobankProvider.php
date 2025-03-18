@@ -18,28 +18,45 @@ class MonobankProvider implements PriceProviderInterface
         $this->client = new Client();
     }
 
+    /**
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function makeApiRequest(): string
     {
         $response = $this->client->request('GET', self::API_URL);
         return $response->getBody()->getContents();
     }
 
+    /**
+     * @param string $json
+     * @return array
+     */
     public function parsingResponse(string $json): array
     {
         return [];
     }
 
+    /**
+     * @return array
+     */
     public function getPrices(): array
     {
 
         return [];
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return "monobank";
     }
 
+    /**
+     * @return array
+     */
     public function getAvailablePairs(): array
     {
         return [];

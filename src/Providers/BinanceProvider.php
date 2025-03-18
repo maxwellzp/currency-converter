@@ -16,18 +16,30 @@ class BinanceProvider implements PriceProviderInterface
     {
         $this->client = new Client();
     }
+
+    /**
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function makeApiRequest(): string
     {
         $response = $this->client->request('GET', self::API_URL);
         return $response->getBody()->getContents();
     }
 
+    /**
+     * @return array
+     */
     public function getPrices(): array
     {
         $json = $this->makeApiRequest();
         return $this->parsingResponse($json);
     }
 
+    /**
+     * @param string $json
+     * @return array
+     */
     public function parsingResponse(string $json): array
     {
         $result = [];
@@ -38,11 +50,17 @@ class BinanceProvider implements PriceProviderInterface
         return $result;
     }
 
+    /**
+     * @return string
+     */
     public function getName(): string
     {
         return "binance";
     }
 
+    /**
+     * @return string[]
+     */
     public function getAvailablePairs(): array
     {
         return ['BTC-USD'];

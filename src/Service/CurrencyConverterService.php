@@ -17,6 +17,13 @@ class CurrencyConverterService
 
     }
 
+    /**
+     * @param string $amount
+     * @param string $currencyFrom
+     * @param string $currencyTo
+     * @return float
+     * @throws \Exception
+     */
     public function convert(string $amount, string $currencyFrom, string $currencyTo): float
     {
         if ($currencyTo === $currencyFrom) {
@@ -35,11 +42,20 @@ class CurrencyConverterService
         throw new \Exception(sprintf('There is no exchange rate for %s-%s', $currencyFrom, $currencyTo));
     }
 
+    /**
+     * @param string $key
+     * @return string|null
+     */
     public function fetchFromRedis(string $key): string|null
     {
         return $this->predisClient->get($key);
     }
 
+    /**
+     * @param string $currencyFrom
+     * @param string $currencyTo
+     * @return string|null
+     */
     public function directExchangeRate(string $currencyFrom, string $currencyTo)
     {
         // We want to receive BTC-USD price
@@ -51,6 +67,11 @@ class CurrencyConverterService
         return $this->fetchFromRedis($key);
     }
 
+    /**
+     * @param string $currencyFrom
+     * @param string $currencyTo
+     * @return float|null
+     */
     public function crossExchangeRate(string $currencyFrom, string $currencyTo): null|float
     {
         // We want to receive BTC-UAH price
@@ -77,6 +98,11 @@ class CurrencyConverterService
         return $firstPairPrice * $secondPairPrice; //83331.03 × 41.43 = 3452404.5729
     }
 
+    /**
+     * @param string $currencyFrom
+     * @param string $currencyTo
+     * @return float|null
+     */
     public function indirectExchangeRate(string $currencyFrom, string $currencyTo): null|float
     {
         // We want to receive USD-BTC price
