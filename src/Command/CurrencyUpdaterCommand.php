@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:currency-updater',
-    description: 'Add a short description for your command',
+    description: 'Command to update exchange rates in Redis',
 )]
 class CurrencyUpdaterCommand extends Command
 {

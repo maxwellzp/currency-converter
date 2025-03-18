@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:currency-converter',
-    description: 'Add a short description for your command',
+    description: 'A simple CLI currency converter',
 )]
 class CurrencyConverterCommand extends Command
 {
@@ -44,7 +44,7 @@ class CurrencyConverterCommand extends Command
 
         $io->writeln(sprintf("Convert %d %s to %s.", $amount, $from, $to));
         $result = $this->currencyConverterService->convert($amount, $from, $to);
-        $io->writeln("result: " . $result);
+        $io->success(sprintf("Conversion result: %s %s", $result, $to));
 
         return Command::SUCCESS;
     }
