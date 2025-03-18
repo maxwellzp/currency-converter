@@ -17,18 +17,73 @@ class CurrencyConverterService
 
     }
 
-    public function convert(string $amount, string $currencyFrom, string $currencyTo): int
+    public function convert(string $amount, string $currencyFrom, string $currencyTo): float
     {
-        // ...
-        $provider = 'someprovider';
-        $key = sprintf('%s-%s', $provider, $currencyFrom, $currencyTo);
-        $currencyRate = $this->fetchFromRedis($key);
+        if ($currencyTo === $currencyFrom) {
+            return (float)$amount;
+        }
 
-        return 0;
+        $methods = ['directExchangeRate', 'indirectExchangeRate', 'crossExchangeRate'];
+
+        foreach ($methods as $method) {
+            $exchangeRate = $this->$method($currencyFrom, $currencyTo);
+            if ($exchangeRate !== null) {
+                return $amount * $exchangeRate;
+            }
+        }
+
+        throw new \Exception(sprintf('There is no exchange rate for %s-%s', $currencyFrom, $currencyTo));
     }
 
     public function fetchFromRedis(string $key): string|null
     {
         return $this->predisClient->get($key);
+    }
+
+    public function directExchangeRate(string $currencyFrom, string $currencyTo)
+    {
+        // We want to receive BTC-USD price
+        // Approximately = 3456493.90
+        // $currencyFrom = BTC
+        // $currencyTo = USD
+
+        $key = sprintf('%s-%s', $currencyFrom, $currencyTo);
+        return $this->fetchFromRedis($key);
+    }
+
+    public function crossExchangeRate(string $currencyFrom, string $currencyTo): null|float
+    {
+        // We want to receive BTC-UAH price
+        // Approximately = 3456493.90
+        // $currencyFrom = BTC
+        // $currencyTo = UAH
+
+        // But we have only the following prices so we can calculate BTC-UAH through base USD currency
+        // BTC-USD price = 83331.03
+        // USD-UAH price = 41.43
+
+        // In our case the base currency is USD
+        $firstPairKey = sprintf('%s-%s', $currencyFrom, 'USD');
+        $firstPairPrice = $this->fetchFromRedis($firstPairKey);
+        if ($firstPairPrice === null) {
+            return null;
+        }
+        $secondPairKey = sprintf('%s-%s', 'USD', $currencyTo);
+        $secondPairPrice = $this->fetchFromRedis($secondPairKey);
+        if ($secondPairPrice === null) {
+            return null;
+        }
+
+        return $firstPairPrice * $secondPairPrice; //83331.03 × 41.43 = 3452404.5729
+    }
+
+    public function indirectExchangeRate(string $currencyFrom, string $currencyTo): null|float
+    {
+        // We want to receive USD-BTC price
+        // Approximately = 0.0000121117
+        // $currencyFrom = USD
+        // $currencyTo = BTC
+        $key = sprintf('%s-%s', $currencyTo, $currencyFrom);
+        return $this->fetchFromRedis($key);
     }
 }

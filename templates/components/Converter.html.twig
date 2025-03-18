@@ -1,15 +1,15 @@
 <div {{ attributes }}>
     <div class="row">
         <div class="col">
-    <label for="amountElement" class="form-label">Amount</label>
-    <input class="form-control" id="amountElement" type="number" data-model="amount">
+            <label for="amountElement" class="form-label">Amount</label>
+            <input class="form-control" id="amountElement" type="number" data-model="amount">
         </div>
     </div>
 
     <div class="row mt-3">
         <div class="col">
             <label for="currencyFromElement" class="form-label">Currency From</label>
-            <select class="form-select" id="currencyFromElement" data-model="currenciesFrom">
+            <select class="form-select" id="currencyFromElement" data-model="currencyFrom">
                 {% for currency in this.fromCurrencies %}
                     <option value="{{ currency }}">{{ currency }}</option>
                 {% endfor %}
@@ -17,7 +17,7 @@
         </div>
         <div class="col">
             <label for="currencyToElement" class="form-label">Currency To</label>
-            <select class="form-select" id="currencyToElement" data-model="currenciesTo">
+            <select class="form-select" id="currencyToElement" data-model="currencyTo">
                 {% for currency in this.toCurrencies %}
                     <option value="{{ currency }}">{{ currency }}</option>
                 {% endfor %}
@@ -28,7 +28,7 @@
     <div class="row mt-3">
         <div class="col">
             <label for="conversionResult" class="form-label">Result</label>
-            <input class="form-control" id="conversionResult" type="text" readonly value="{{ this.getResult }}">
+            <input class="form-control" id="conversionResult" type="text" readonly value="{{ this.getResultString }}">
         </div>
     </div>
 </div>
