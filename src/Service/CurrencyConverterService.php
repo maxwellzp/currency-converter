@@ -99,9 +99,9 @@ class CurrencyConverterService
     /**
      * @param string $currencyFrom
      * @param string $currencyTo
-     * @return float|null
+     * @return string|null
      */
-    public function indirectExchangeRate(string $currencyFrom, string $currencyTo): null|float
+    public function indirectExchangeRate(string $currencyFrom, string $currencyTo): null|string
     {
         // We want to receive USD-BTC price
         // Approximately = 0.0000121117

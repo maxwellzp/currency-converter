@@ -10,21 +10,27 @@ class BinanceProvider implements PriceProviderInterface
 {
     private const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
 
-    private Client $client;
 
-    public function __construct()
+    public function __construct(
+        private Client $client
+    )
     {
-        $this->client = new Client();
+
     }
 
     /**
      * @return string
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
-    public function makeApiRequest(): string
+    public function makeApiRequest(): array
     {
         $response = $this->client->request('GET', self::API_URL);
-        return $response->getBody()->getContents();
+        $json = $response->getBody()->getContents();
+        if (!json_validate($json)) {
+            throw new \Exception('Json response is not valid');
+        }
+        return [$response->getStatusCode(), $json];
     }
 
     /**

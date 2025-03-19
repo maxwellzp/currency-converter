@@ -64,7 +64,8 @@
             "@auto-scripts"
         ],
         "psr-detect-violations": "./vendor/bin/phpcs src/ tests/",
-        "psr-auto-correct": "./vendor/bin/phpcbf src/ tests/"
+        "psr-auto-correct": "./vendor/bin/phpcbf src/ tests/",
+        "test": "./vendor/bin/phpunit tests/ --testdox"
     },
     "conflict": {
         "symfony/symfony": "*"
