@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Service;
 
 use App\Service\CurrencyConverterService;
@@ -29,7 +31,6 @@ class CurrencyConverterServiceTest extends TestCase
 //
 //        $myResult = $predisClient->get('BTC');
 //        var_dump($myResult);
-
 
 
 //        die();
@@ -71,7 +72,7 @@ class CurrencyConverterServiceTest extends TestCase
             ->with(
                 $this->equalTo('get'),
             )
-            ->willReturnCallback(function ($parameters, $commandArguments) use($invokedCount) {
+            ->willReturnCallback(function ($parameters, $commandArguments) use ($invokedCount) {
 
                 $marketPair = $commandArguments[0];
 
@@ -94,66 +95,104 @@ class CurrencyConverterServiceTest extends TestCase
                     // argument: AAA-USD
                     var_dump(["The third call", $marketPair]);
                 }
-            });
-        ;
-
+            });;
+        $currencyA = 'AAA';
+        $currencyB = 'ZZZ';
         $service = new CurrencyConverterService($predisClient);
         $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(sprintf('There is no exchange rate for %s-%s', $currencyA, $currencyB));
         $service->convert(10, 'AAA', 'ZZZ');
     }
 
-//    public function testCanFetchExchangeRateFromRedis()
-//    {
-//        $predisClient = $this->createMock(ClientInterface::class);
-//        $predisClient
-//            ->expects($this->once())
-//            ->method('__call')
-//            ->with(
-//                $this->equalTo('get'),
-//                $this->equalTo(['BTC-USD'])
-//            )
-//            ->willReturn('83659.99000000');
-//        $service = new CurrencyConverterService($predisClient);
-//        $valueFromRedis = $service->fetchFromRedis('BTC-USD');
-//
-//        $this->assertIsString($valueFromRedis);
-//        $this->assertNotEmpty($valueFromRedis);
-//    }
+    public function testCanFetchExchangeRateFromRedis()
+    {
+        $expectedPrice = '83659.99000000';
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['BTC-USD'])
+            )
+            ->willReturn('83659.99000000');
+        $service = new CurrencyConverterService($predisClient);
+        $actualPriceFromRedis = $service->fetchFromRedis('BTC-USD');
 
-//    public function testCannotFetchExchangeRateFromRedis()
-//    {
-//        $predisClient = $this->createMock(ClientInterface::class);
-//        $predisClient
-//            ->expects($this->once())
-//            ->method('__call')
-//            ->with(
-//                $this->equalTo('get'),
-//                $this->equalTo(['BTC-USD'])
-//            )
-//            ->willReturn('83659.99000000');
-//        $service = new CurrencyConverterService($predisClient);
-//        $valueFromRedis = $service->fetchFromRedis('XYZ');
-//        $this->assertNull($valueFromRedis);
-//    }
+        $this->assertIsString($actualPriceFromRedis);
+        $this->assertNotEmpty($actualPriceFromRedis);
+        $this->assertSame($expectedPrice, $actualPriceFromRedis);
+    }
 
-//    public function testDirectExchangeRateWorksCorrectly()
-//    {
-//        $rate = $this->service->directExchangeRate('BTC', 'USD');
-//        $this->assertNotNull($rate);
-//        $this->assertIsString($rate);
-//    }
-//
-//    public function testIndirectExchangeRateWorksCorrectly()
-//    {
-//        $rate = $this->service->indirectExchangeRate('USD', 'BTC');
-//        $this->assertNotNull($rate);
-//        $this->assertIsString($rate);
-//    }
-//
-//    public function testCrossExchangeRateWorksCorrectly()
-//    {
-//        $rate = $this->service->crossExchangeRate('BTC', 'BTC');
-//        $this->assertNotNull($rate);
-//        $this->assertIsFloat($rate);
-//    }
+    public function testCannotFetchExchangeRateFromRedis()
+    {
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['AAA-ZZZ'])
+            )
+            ->willReturn(null);
+        $service = new CurrencyConverterService($predisClient);
+        $valueFromRedis = $service->fetchFromRedis('AAA-ZZZ');
+        $this->assertNull($valueFromRedis);
+    }
+
+    public function testDirectExchangeRateWorksCorrectly()
+    {
+        $expectedPrice = '83659.99000000';
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['BTC-USD'])
+            )
+            ->willReturn($expectedPrice);
+
+        $service = new CurrencyConverterService($predisClient);
+        $actualRate = $service->directExchangeRate('BTC', 'USD');
+        $this->assertNotNull($actualRate);
+        $this->assertIsString($actualRate);
+        $this->assertSame($expectedPrice, $actualRate);
+    }
+
+    public function testIndirectExchangeRateWorksCorrectly()
+    {
+        $expectedPrice = '83659.99000000';
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['BTC-USD'])
+            )
+            ->willReturn($expectedPrice);
+        $service = new CurrencyConverterService($predisClient);
+        $actualRate = $service->indirectExchangeRate('BTC', 'USD');
+        $this->assertNotNull($actualRate);
+        $this->assertIsString($actualRate);
+    }
+
+    public function testCrossExchangeRateWorksCorrectly()
+    {
+        $expectedPrice = '83659.99000000';
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['BTC-USD'])
+            )
+            ->willReturn($expectedPrice);
+        $service = new CurrencyConverterService($predisClient);
+        $actualRate = $service->crossExchangeRate('BTC', 'BTC');
+        $this->assertNotNull($actualRate);
+        $this->assertIsFloat($actualRate);
+    }
 }

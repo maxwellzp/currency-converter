@@ -54,7 +54,7 @@ class CurrencyConverterService
      * @param string $currencyTo
      * @return string|null
      */
-    public function directExchangeRate(string $currencyFrom, string $currencyTo)
+    public function directExchangeRate(string $currencyFrom, string $currencyTo): string|null
     {
         // We want to receive BTC-USD price
         // Approximately = 3456493.90
