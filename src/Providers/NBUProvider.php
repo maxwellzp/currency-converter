@@ -7,26 +7,15 @@ namespace App\Providers;
 use GuzzleHttp\Client;
 
 // https://bank.gov.ua/ua/open-data/api-dev
-class NBUProvider implements PriceProviderInterface
+class NBUProvider extends BasePriceProvider implements PriceProviderInterface
 {
-    private const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
+    public const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
-    private Client $client;
-
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = new Client();
+        parent::__construct($client);
     }
 
-    /**
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function makeApiRequest(): string
-    {
-        $response = $this->client->request('GET', self::API_URL);
-        return $response->getBody()->getContents();
-    }
 
     /**
      * @return array
@@ -34,7 +23,7 @@ class NBUProvider implements PriceProviderInterface
      */
     public function getPrices(): array
     {
-        $json = $this->makeApiRequest();
+        [$code, $json] = $this->makeApiRequest(self::API_URL);
         return $this->parsingResponse($json);
     }
 

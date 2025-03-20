@@ -6,39 +6,22 @@ namespace App\Providers;
 
 use GuzzleHttp\Client;
 
-class BinanceProvider implements PriceProviderInterface
+class BinanceProvider extends BasePriceProvider implements PriceProviderInterface
 {
-    private const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
+    public const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
 
-
-    public function __construct(
-        private Client $client
-    )
+    public function __construct(Client $client)
     {
-
-    }
-
-    /**
-     * @return string
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Exception
-     */
-    public function makeApiRequest(): array
-    {
-        $response = $this->client->request('GET', self::API_URL);
-        $json = $response->getBody()->getContents();
-        if (!json_validate($json)) {
-            throw new \Exception('Json response is not valid');
-        }
-        return [$response->getStatusCode(), $json];
+        parent::__construct($client);
     }
 
     /**
      * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getPrices(): array
     {
-        $json = $this->makeApiRequest();
+        [$code, $json] = $this->makeApiRequest(self::API_URL);
         return $this->parsingResponse($json);
     }
 

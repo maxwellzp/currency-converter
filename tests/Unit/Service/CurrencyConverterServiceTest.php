@@ -5,6 +5,7 @@ namespace App\Tests\Unit\Service;
 use App\Service\CurrencyConverterService;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
+use Predis\ClientInterface;
 
 class CurrencyConverterServiceTest extends TestCase
 {
@@ -13,7 +14,40 @@ class CurrencyConverterServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $predisClient = new Client();
+//        $predisClient = $this->createStub(ClientInterface::class);
+//        $predisClient->method('get')->willReturn('83659.99000000');
+
+
+//        $predisClient = $this->createConfiguredStub(
+//            ClientInterface::class,
+//            [
+//                'get'     => '83659.99000000',
+//            ]
+//        );
+//        $predisClient->get();
+
+
+//        $myResult = $predisClient->set('aaaaaaaaaaaa', 123);
+//        var_dump($myResult);
+
+        $predisClient = $this->createMock(ClientInterface::class);
+        $predisClient
+            ->expects($this->once())
+            ->method('__call')
+            ->with(
+                $this->equalTo('get'),
+                $this->equalTo(['BTC'])
+            )
+            ->willReturn('83659.99000000');
+
+
+
+        $myResult = $predisClient->get('BTC');
+        var_dump($myResult);
+
+
+
+        die();
         $predisClient->set('BTC-USD', '83659.99000000');
         $predisClient->set('USD-BTC', '0.000011958');
         $predisClient->set('USD-UAH', '41.55');

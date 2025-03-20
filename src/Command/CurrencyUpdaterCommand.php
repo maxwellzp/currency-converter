@@ -8,6 +8,7 @@ use App\Providers\BinanceProvider;
 use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
 use App\Service\PriceUpdaterService;
+use GuzzleHttp\Client;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,10 +30,11 @@ class CurrencyUpdaterCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $guzzle = new Client();
         $this->priceUpdater->updateRedisKeys([
-            new NBUProvider(),
-            new BinanceProvider(),
-            new PrivatBankProvider(),
+            new NBUProvider($guzzle),
+            new BinanceProvider($guzzle),
+            new PrivatBankProvider($guzzle),
         ]);
 
         return Command::SUCCESS;

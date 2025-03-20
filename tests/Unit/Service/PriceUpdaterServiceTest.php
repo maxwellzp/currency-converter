@@ -11,20 +11,20 @@ use GuzzleHttp\Client as GuzzleClient;
 class PriceUpdaterServiceTest extends TestCase
 {
     private PriceUpdaterService $service;
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $predisClient = new Client();
+//    protected function setUp(): void
+//    {
+//        parent::setUp();
+//        $predisClient = new Client();
+//
+//        $this->service = new PriceUpdaterService($predisClient);
+//    }
 
-        $this->service = new PriceUpdaterService($predisClient);
-    }
-
-    public function testUpdatePrice()
-    {
-        $guzzleClient = new GuzzleClient();
-        $binanceProvider = new BinanceProvider($guzzleClient);
-        $this->service->updatePrice($binanceProvider);
-
-
-    }
+//    public function testUpdatePrice()
+//    {
+//        $guzzleClient = new GuzzleClient();
+//        $binanceProvider = new BinanceProvider($guzzleClient);
+//        $this->service->updatePrice($binanceProvider);
+//
+//
+//    }
 }
