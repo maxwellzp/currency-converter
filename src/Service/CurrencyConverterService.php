@@ -10,9 +10,11 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 
 class CurrencyConverterService
 {
+    private ClientInterface $predisClient;
     public function __construct(
-        private ClientInterface $predisClient,
+
     ) {
+        $this->predisClient = new Client();
     }
 
     /**

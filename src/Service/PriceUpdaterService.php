@@ -11,7 +11,6 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 class PriceUpdaterService
 {
     public function __construct(
-        #[AutowireInline(class: 'Predis\Client')]
         private Client $predisClient,
     ) {
     }
