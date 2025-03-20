@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Tests\Unit\Providers;
@@ -14,7 +15,6 @@ use PHPUnit\Framework\TestCase;
 
 class BasePriceProviderTest extends TestCase
 {
-
     #[DataProvider('priceProvidersWithResponse')]
     public function testMakeApiRequestReturnsValidJson(string $providerClassName, string $correctJson)
     {

@@ -8,9 +8,7 @@ class BasePriceProvider
 {
     public function __construct(
         private Client $client
-    )
-    {
-
+    ) {
     }
 
     /**

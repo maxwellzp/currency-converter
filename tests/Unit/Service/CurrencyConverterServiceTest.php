@@ -11,7 +11,6 @@ use Predis\ClientInterface;
 
 class CurrencyConverterServiceTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -95,7 +94,8 @@ class CurrencyConverterServiceTest extends TestCase
                     // argument: AAA-USD
                     var_dump(["The third call", $marketPair]);
                 }
-            });;
+            });
+        ;
         $currencyA = 'AAA';
         $currencyB = 'ZZZ';
         $service = new CurrencyConverterService($predisClient);
