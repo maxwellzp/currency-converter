@@ -12,9 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PriceController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function index(LoggerInterface $logger): Response
+    public function index(): Response
     {
-        $logger->critical('controller');
         return $this->render('price/index.html.twig');
     }
 }

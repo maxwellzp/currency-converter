@@ -16,6 +16,4 @@ class CurrencyHelper
 
         return $currencyName['alpha3'];
     }
-
-
 }

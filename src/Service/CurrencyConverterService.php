@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Service;
 
 use Predis\Client;
+use Predis\ClientInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 
 class CurrencyConverterService
 {
     public function __construct(
-        #[AutowireInline(class: 'Predis\Client')]
-        private Client $predisClient,
+        private ClientInterface $predisClient,
     ) {
     }
 
