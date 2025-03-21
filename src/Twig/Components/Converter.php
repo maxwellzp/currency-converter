@@ -2,7 +2,13 @@
 
 namespace App\Twig\Components;
 
+use App\Providers\BinanceProvider;
+use App\Providers\MonobankProvider;
+use App\Providers\NBUProvider;
+use App\Providers\PrivatBankProvider;
 use App\Service\CurrencyConverterService;
+use App\Utils\CurrencyList;
+use GuzzleHttp\Client as GuzzleClient;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -32,7 +38,7 @@ class Converter
     public string $currencyFrom = 'BTC';
 
     #[LiveProp(writable: true)]
-    public string $currencyTo = 'UAH';
+    public string $currencyTo = 'USD';
 
     /**
      * @return string
@@ -47,28 +53,46 @@ class Converter
             'currencyTo' => $this->currencyTo,
         ]);
 
+        $result = 0;
+        try{
+            $result = $this->currencyConverterService->convert(
+                $this->amount,
+                $this->currencyFrom,
+                $this->currencyTo,
+            );
+        }catch (\Exception $exception){
+            $this->logger->critical($exception->getMessage());
+        }
 
-        return $this->currencyConverterService->convert(
-            $this->amount,
-            $this->currencyFrom,
-            $this->currencyTo,
-        );
+        return $result;
     }
 
-    /**
-     * @return string[]
-     */
+
+    #[LiveAction]
     public function getFromCurrencies(): array
     {
-        return ['BTC', 'USD', 'EUR', 'UAH'];
+        $guzzle = new GuzzleClient();
+        $currencyList = new CurrencyList([
+            new NBUProvider($guzzle),
+            new BinanceProvider($guzzle),
+            new PrivatBankProvider($guzzle),
+            new MonobankProvider($guzzle),
+        ]);
+        return $currencyList->getCurrencyFromList();
     }
 
-    /**
-     * @return string[]
-     */
+
+    #[LiveAction]
     public function getToCurrencies(): array
     {
-        return ['EUR', 'UAH'];
+        $guzzle = new GuzzleClient();
+        $currencyList = new CurrencyList([
+            new NBUProvider($guzzle),
+            new BinanceProvider($guzzle),
+            new PrivatBankProvider($guzzle),
+            new MonobankProvider($guzzle),
+        ]);
+        return $currencyList->getCurrencyToList($this->currencyFrom);
     }
 
     /**

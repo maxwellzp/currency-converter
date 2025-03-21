@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Providers\BinanceProvider;
+use App\Providers\MonobankProvider;
 use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
 use App\Service\PriceUpdaterService;
@@ -39,6 +40,7 @@ class CurrencyUpdaterCommand extends Command
             new NBUProvider($guzzle),
             new BinanceProvider($guzzle),
             new PrivatBankProvider($guzzle),
+            new MonobankProvider($guzzle),
         ]);
 
         return Command::SUCCESS;
