@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Model\CurrencyConfig;
+use App\Utils\CurrencyFormConfigurator;
+use App\Utils\CurrencyList;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,6 +28,16 @@ class TestCurrencyConverterCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        $configurator = new CurrencyFormConfigurator();
+        /** @var CurrencyConfig[] $configs */
+        $configs = $configurator->getConfigurations();
+        foreach ($configs as $config) {
+            $io->writeln(sprintf(
+                "Base currency: %s", $config->getBaseCurrency()
+                .
+                "       " . implode(',', $config->getCounterCurrencies())
+            ));
+        }
 
         return Command::SUCCESS;
     }
