@@ -27,11 +27,12 @@ services:
     build:
       context: ./docker/php
     container_name: php-worker-container
+    restart: unless-stopped
     volumes:
       - ./:/var/www/currency-converter
     networks:
       - currency-converter-network
-    command: ["bin/console", "messenger:consume", "scheduler_update-from-api"]
+    command: ["bin/console", "messenger:consume", "scheduler_update-from-api", "--limit=10"]
 
   redis:
     image: redis:7.4-alpine
