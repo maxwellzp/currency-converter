@@ -27,7 +27,9 @@ class CurrencyUpdaterCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $client = new PredisClient();
+        $client = new PredisClient([
+            'host' => $_ENV['REDIS_HOST'],
+        ]);
         $this->priceUpdater = new PriceUpdaterService($client);
     }
 

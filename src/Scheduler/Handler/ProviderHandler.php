@@ -21,7 +21,9 @@ class ProviderHandler
     public function __invoke(ProviderMessage $test): void
     {
         $guzzleClient = new GuzzleClient();
-        $predisClient = new PredisClient();
+        $predisClient = new PredisClient([
+            'host' => $_ENV['REDIS_HOST'],
+        ]);
         $className = $test->getClassName();
         /** @var PriceProviderInterface $provider */
         $provider = new $className($guzzleClient);

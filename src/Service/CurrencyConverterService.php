@@ -14,7 +14,9 @@ class CurrencyConverterService
     public function __construct(
 
     ) {
-        $this->predisClient = new Client();
+        $this->predisClient = new Client([
+            'host' => $_ENV['REDIS_HOST'],
+        ]);
     }
 
     /**
