@@ -22,6 +22,17 @@ services:
       - ./:/var/www/currency-converter
     networks:
       - currency-converter-network
+
+  php-scheduler:
+    build:
+      context: ./docker/php
+    container_name: php-worker-container
+    volumes:
+      - ./:/var/www/currency-converter
+    networks:
+      - currency-converter-network
+    command: ["bin/console", "messenger:consume", "scheduler_update-from-api"]
+
   redis:
     image: redis:7.4-alpine
     container_name: redis-container
