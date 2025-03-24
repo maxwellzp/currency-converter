@@ -87,7 +87,6 @@ class NBUProvider extends BasePriceProvider implements PriceProviderInterface
             "AZN-UAH",
             "RON-UAH",
             "TRY-UAH",
-            "XDR-UAH",
             "BGN-UAH",
             "EUR-UAH",
             "PLN-UAH",
@@ -115,10 +114,6 @@ class NBUProvider extends BasePriceProvider implements PriceProviderInterface
             "TJS-UAH",
             "GEL-UAH",
             "BRL-UAH",
-            "XAU-UAH",
-            "XAG-UAH",
-            "XPT-UAH",
-            "XPD-UAH"
         ];
     }
 }
