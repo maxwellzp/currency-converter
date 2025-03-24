@@ -19,21 +19,20 @@ class Converter
         private readonly CurrencyConverterService $currencyConverterService,
         private readonly LoggerInterface $logger,
     ) {
-        $this->logger->critical('Initial values: ', [
-            'amount' => $this->amount,
-            'currencyFrom' => $this->currencyFrom,
-            'currencyTo' => $this->currencyTo,
-        ]);
+        $this->currencyFrom = 'AED';
+
+        $configurator = new CurrencyFormConfigurator();
+        $this->currencyTo = $configurator->getCurrencyToList($this->currencyFrom)[0];
     }
 
     #[LiveProp(writable: true)]
-    public int $amount = 1;
+    public float $amount = 1;
 
     #[LiveProp(writable: true, onUpdated: 'onSelectUpdated')]
-    public string $currencyFrom = 'BTC';
+    public string $currencyFrom;
 
     #[LiveProp(writable: true)]
-    public string $currencyTo = 'USD';
+    public string $currencyTo;
 
     public function onSelectUpdated(): void
     {
@@ -48,12 +47,6 @@ class Converter
     #[LiveAction]
     public function calculateConversion(): string
     {
-        $this->logger->critical('calculateConversion values: ', [
-            'amount' => $this->amount,
-            'currencyFrom' => $this->currencyFrom,
-            'currencyTo' => $this->currencyTo,
-        ]);
-
         $result = 0;
         try{
             $result = $this->currencyConverterService->convert(
@@ -64,7 +57,6 @@ class Converter
         }catch (\Exception $exception){
             $this->logger->critical($exception->getMessage());
         }
-
         return $result;
     }
 
