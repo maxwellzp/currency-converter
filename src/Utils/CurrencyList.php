@@ -46,6 +46,9 @@ class CurrencyList
     {
         /** @var CurrencyConfig $currencyConfig */
         $currencyConfig = $this->configurations[$currency];
+        if($currencyConfig === null) {
+            throw new \Exception('Currency not found in configurations: ' . $currency);
+        }
         return $currencyConfig->getCounterCurrencies();
     }
 
