@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col">
             <label for="amountElement" class="form-label">Amount</label>
-            <input class="form-control" id="amountElement" type="number" data-model="amount">
+            <input class="form-control" id="amountElement" type="number" step="any" data-model="amount">
         </div>
     </div>
 
@@ -11,7 +11,7 @@
             <label for="currencyFromElement" class="form-label">Currency From</label>
             <select class="form-select" id="currencyFromElement" data-model="currencyFrom">
                 {% for currency in this.fromCurrencies %}
-                    <option value="{{ currency }}">{{ currency }}</option>
+                    <option value="{{ currency }}">{{ currency|currency_name }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -19,7 +19,7 @@
             <label for="currencyToElement" class="form-label">Currency To</label>
             <select class="form-select" id="currencyToElement" data-model="currencyTo">
                 {% for currency in this.toCurrencies %}
-                    <option value="{{ currency }}">{{ currency }}</option>
+                    <option value="{{ currency }}">{{ currency|currency_name }}</option>
                 {% endfor %}
             </select>
         </div>
