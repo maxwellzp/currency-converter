@@ -8,19 +8,22 @@ use Alcohol\ISO4217;
 
 class CurrencyHelper
 {
-    public static function getCurrencyAlpha3ByCode(int $currency): string
+    public function __construct(private ISO4217 $iso4217)
     {
-        $iso4217 = new ISO4217();
+
+    }
+
+    public function getCurrencyAlpha3ByCode(int $currency): string
+    {
         $normalizedCodeA = str_pad(strval($currency), 3, '0', STR_PAD_LEFT);
-        $currencyData = $iso4217->getByCode($normalizedCodeA);
+        $currencyData = $this->iso4217->getByCode($normalizedCodeA);
 
         return $currencyData['alpha3'];
     }
 
-    public static function getCurrencyNameByAlpha3(string $currency): string
+    public function getCurrencyNameByAlpha3(string $currency): string
     {
-        $iso4217 = new ISO4217();
-        $currencyData = $iso4217->getByAlpha3($currency);
+        $currencyData = $this->iso4217->getByAlpha3($currency);
         return $currencyData['name'];
     }
 }

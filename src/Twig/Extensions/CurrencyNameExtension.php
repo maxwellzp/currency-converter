@@ -2,12 +2,17 @@
 
 namespace App\Twig\Extensions;
 
+use Alcohol\ISO4217;
 use App\Utils\CurrencyHelper;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class CurrencyNameExtension extends AbstractExtension
 {
+    public function __construct(private CurrencyHelper $currencyHelper)
+    {
+    }
+
     public function getFilters(): array
     {
         return [
@@ -20,7 +25,7 @@ class CurrencyNameExtension extends AbstractExtension
         if ($alpha3 == 'BTC') {
             return sprintf("%s (%s)", $alpha3, 'Bitcoin');
         } else {
-            return sprintf("%s (%s)", $alpha3, CurrencyHelper::getCurrencyNameByAlpha3($alpha3));
+            return sprintf("%s (%s)", $alpha3, $this->currencyHelper->getCurrencyNameByAlpha3($alpha3));
         }
     }
 }
