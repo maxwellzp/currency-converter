@@ -178,8 +178,8 @@ class MonobankProvider extends BasePriceProvider implements PriceProviderInterfa
      */
     public function getMarketPairFromCurrencies($currencyCodeA, $currencyCodeB)
     {
-        $currencyA = CurrencyHelper::getCurrencyNameByCode($currencyCodeA);
-        $currencyB = CurrencyHelper::getCurrencyNameByCode($currencyCodeB);
+        $currencyA = CurrencyHelper::getCurrencyAlpha3ByCode($currencyCodeA);
+        $currencyB = CurrencyHelper::getCurrencyAlpha3ByCode($currencyCodeB);
 
         return sprintf("%s-%s", $currencyA, $currencyB);
     }
