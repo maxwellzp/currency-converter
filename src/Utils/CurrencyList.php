@@ -102,7 +102,6 @@ class CurrencyList
         $resultPairs = [];
         // Calculate each to each
         foreach ($uniqueMarkets as $marketA) {
-
             [$currencyA,] = $this->transformMarketToCurrencies($marketA);
 
             $firstPairKey = sprintf('%s-%s', $currencyA, 'USD');

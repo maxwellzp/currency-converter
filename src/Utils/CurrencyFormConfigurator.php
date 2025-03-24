@@ -23,7 +23,6 @@ class CurrencyFormConfigurator
             new PrivatBankProvider($guzzle),
             new MonobankProvider($guzzle),
         ]);
-
     }
 
     public function getCurrencyFromList(): array

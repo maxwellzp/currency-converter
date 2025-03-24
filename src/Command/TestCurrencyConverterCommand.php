@@ -33,7 +33,8 @@ class TestCurrencyConverterCommand extends Command
         $configs = $configurator->getConfigurations();
         foreach ($configs as $config) {
             $io->writeln(sprintf(
-                "Base currency: %s", $config->getBaseCurrency()
+                "Base currency: %s",
+                $config->getBaseCurrency()
                 .
                 "       " . implode(',', $config->getCounterCurrencies())
             ));

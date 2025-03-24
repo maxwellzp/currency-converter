@@ -48,13 +48,13 @@ class Converter
     public function calculateConversion(): string
     {
         $result = 0;
-        try{
+        try {
             $result = $this->currencyConverterService->convert(
                 $this->amount,
                 $this->currencyFrom,
                 $this->currencyTo,
             );
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $this->logger->critical($exception->getMessage());
         }
         return $result;

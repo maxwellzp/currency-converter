@@ -30,6 +30,6 @@ class ProviderHandler
         $priceUpdater = new PriceUpdaterService($predisClient);
         $priceUpdater->updatePrice($provider);
 
-        $this->logger->info('Service name: '. $test->getClassName());
+        $this->logger->info('Service name: ' . $test->getClassName());
     }
 }

@@ -11,9 +11,8 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
 class CurrencyConverterService
 {
     private ClientInterface $predisClient;
-    public function __construct(
-
-    ) {
+    public function __construct()
+    {
         $this->predisClient = new Client([
             'host' => $_ENV['REDIS_HOST'],
         ]);
