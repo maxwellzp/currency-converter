@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use GuzzleHttp\Client;
+use App\Service\ApiService;
 
 // https://api.privatbank.ua/#p24/exchange
-class PrivatBankProvider extends BasePriceProvider implements PriceProviderInterface
+class PrivatBankProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
 
-    public function __construct(Client $client)
+    public function __construct(private ApiService $apiService)
     {
-        parent::__construct($client);
+
     }
 
     /**
@@ -22,7 +22,7 @@ class PrivatBankProvider extends BasePriceProvider implements PriceProviderInter
      */
     public function getPrices(): array
     {
-        [$code, $json] = $this->makeApiRequest(self::API_URL);
+        [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
     }
 

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use GuzzleHttp\Client;
+use App\Service\ApiService;
 
 // https://bank.gov.ua/ua/open-data/api-dev
-class NBUProvider extends BasePriceProvider implements PriceProviderInterface
+class NBUProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
-    public function __construct(Client $client)
+    public function __construct(private ApiService $apiService)
     {
-        parent::__construct($client);
+
     }
 
 
@@ -23,7 +23,7 @@ class NBUProvider extends BasePriceProvider implements PriceProviderInterface
      */
     public function getPrices(): array
     {
-        [$code, $json] = $this->makeApiRequest(self::API_URL);
+        [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
     }
 

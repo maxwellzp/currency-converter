@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Service\ApiService;
 use App\Utils\CurrencyHelper;
-use GuzzleHttp\Client;
 
 // https://monobank.ua/api-docs/monobank/publichni-dani/get--bank--currency
-class MonobankProvider extends BasePriceProvider implements PriceProviderInterface
+class MonobankProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://api.monobank.ua/bank/currency';
 
-    public function __construct(Client $client)
+    public function __construct(private ApiService $apiService, private CurrencyHelper $currencyHelper)
     {
-        parent::__construct($client);
+
     }
 
     /**
@@ -43,7 +43,7 @@ class MonobankProvider extends BasePriceProvider implements PriceProviderInterfa
      */
     public function getPrices(): array
     {
-        [$code, $json] = $this->makeApiRequest(self::API_URL);
+        [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
     }
 
@@ -178,8 +178,8 @@ class MonobankProvider extends BasePriceProvider implements PriceProviderInterfa
      */
     public function getMarketPairFromCurrencies($currencyCodeA, $currencyCodeB)
     {
-        $currencyA = CurrencyHelper::getCurrencyAlpha3ByCode($currencyCodeA);
-        $currencyB = CurrencyHelper::getCurrencyAlpha3ByCode($currencyCodeB);
+        $currencyA = $this->currencyHelper->getCurrencyAlpha3ByCode($currencyCodeA);
+        $currencyB = $this->currencyHelper->getCurrencyAlpha3ByCode($currencyCodeB);
 
         return sprintf("%s-%s", $currencyA, $currencyB);
     }

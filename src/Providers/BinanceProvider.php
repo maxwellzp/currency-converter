@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use GuzzleHttp\Client;
+use App\Service\ApiService;
 
-class BinanceProvider extends BasePriceProvider implements PriceProviderInterface
+class BinanceProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
 
-    public function __construct(Client $client)
+    public function __construct(private ApiService $apiService)
     {
-        parent::__construct($client);
+
     }
 
     /**
@@ -21,7 +21,7 @@ class BinanceProvider extends BasePriceProvider implements PriceProviderInterfac
      */
     public function getPrices(): array
     {
-        [$code, $json] = $this->makeApiRequest(self::API_URL);
+        [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
     }
 

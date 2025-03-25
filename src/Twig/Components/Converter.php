@@ -18,11 +18,11 @@ class Converter
     public function __construct(
         private readonly CurrencyConverterService $currencyConverterService,
         private readonly LoggerInterface $logger,
+        private readonly CurrencyFormConfigurator $formConfigurator,
     ) {
         $this->currencyFrom = 'AED';
 
-        $configurator = new CurrencyFormConfigurator();
-        $this->currencyTo = $configurator->getCurrencyToList($this->currencyFrom)[0];
+        $this->currencyTo = $this->formConfigurator->getCurrencyToList($this->currencyFrom)[0];
     }
 
     #[LiveProp(writable: true)]
@@ -36,8 +36,7 @@ class Converter
 
     public function onSelectUpdated(): void
     {
-        $configurator = new CurrencyFormConfigurator();
-        $this->currencyTo = $configurator->getCurrencyToList($this->currencyFrom)[0];
+        $this->currencyTo = $this->formConfigurator->getCurrencyToList($this->currencyFrom)[0];
     }
 
     /**
@@ -64,16 +63,14 @@ class Converter
     #[LiveAction]
     public function getFromCurrencies(): array
     {
-        $configurator = new CurrencyFormConfigurator();
-        return $configurator->getCurrencyFromList();
+        return $this->formConfigurator->getCurrencyFromList();
     }
 
 
     #[LiveAction]
     public function getToCurrencies(): array
     {
-        $configurator = new CurrencyFormConfigurator();
-        return $configurator->getCurrencyToList($this->currencyFrom);
+        return $this->formConfigurator->getCurrencyToList($this->currencyFrom);
     }
 
     /**

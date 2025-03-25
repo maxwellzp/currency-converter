@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Predis\Client;
 use Predis\ClientInterface;
-use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class CurrencyConverterService
 {
-    private ClientInterface $predisClient;
-    public function __construct()
+    public function __construct(
+        private RedisService $redisService,
+    )
     {
-        $this->predisClient = new Client([
-            'host' => $_ENV['REDIS_HOST'],
-        ]);
+
     }
 
     /**
@@ -49,7 +47,7 @@ class CurrencyConverterService
      */
     public function fetchFromRedis(string $key): string|null
     {
-        return $this->predisClient->get($key);
+        return $this->redisService->get($key);
     }
 
     /**

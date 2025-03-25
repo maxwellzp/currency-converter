@@ -23,3 +23,8 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     Alcohol\ISO4217:
+
+    Predis\Client:
+        arguments:
+            - '%env(REDIS_HOST)%'
+    GuzzleHttp\Client:

@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Providers\BinanceProvider;
+use App\Providers\MonobankProvider;
+use App\Providers\NBUProvider;
 use App\Providers\PriceProviderInterface;
-use Predis\Client;
-use Symfony\Component\DependencyInjection\Attribute\AutowireInline;
+use App\Providers\PrivatBankProvider;
 
 class PriceUpdaterService
 {
     public function __construct(
-        private Client $predisClient,
+        private RedisService $redisService,
+        private BinanceProvider $binanceProvider,
+        private MonobankProvider $monobankProvider,
+        private NBUProvider $nbuProvider,
+        private PrivatBankProvider $privatBankProvider,
     ) {
     }
 
-    /**
-     * @param PriceProviderInterface[] $providers
-     * @return void
-     */
-    public function updateRedisKeys(array $providers): void
+
+    public function update(): void
     {
+        $providers = [
+            $this->binanceProvider,
+            $this->monobankProvider,
+            $this->nbuProvider,
+            $this->privatBankProvider
+        ];
         foreach ($providers as $provider) {
             $this->updatePrice($provider);
         }
@@ -32,7 +41,7 @@ class PriceUpdaterService
 
         foreach ($prices as $price) {
             [$pair, $price] = $price;
-            $this->predisClient->set($pair, $price);
+            $this->redisService->set($pair, (string)$price);
         }
     }
 }

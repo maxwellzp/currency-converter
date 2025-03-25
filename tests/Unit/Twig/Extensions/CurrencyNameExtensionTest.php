@@ -5,9 +5,11 @@ namespace App\Tests\Unit\Twig\Extensions;
 use Alcohol\ISO4217;
 use App\Twig\Extensions\CurrencyNameExtension;
 use App\Utils\CurrencyHelper;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(CurrencyNameExtension::class)]
 class CurrencyNameExtensionTest extends TestCase
 {
     private CurrencyNameExtension $extension;

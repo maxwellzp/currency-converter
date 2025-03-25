@@ -8,20 +8,23 @@ use App\Providers\BinanceProvider;
 use App\Providers\MonobankProvider;
 use App\Providers\NBUProvider;
 use App\Providers\PrivatBankProvider;
-use GuzzleHttp\Client as GuzzleClient;
 
 class CurrencyFormConfigurator
 {
     private CurrencyList $currencyList;
 
-    public function __construct()
+    public function __construct(
+        private BinanceProvider $binanceProvider,
+        private MonobankProvider $monobankProvider,
+        private NBUProvider $nbuProvider,
+        private PrivatBankProvider $privatBankProvider,
+    )
     {
-        $guzzle = new GuzzleClient();
         $this->currencyList = new CurrencyList([
-            new NBUProvider($guzzle),
-            new BinanceProvider($guzzle),
-            new PrivatBankProvider($guzzle),
-            new MonobankProvider($guzzle),
+            $this->binanceProvider,
+            $this->monobankProvider,
+            $this->nbuProvider,
+            $this->privatBankProvider,
         ]);
     }
 
