@@ -18,20 +18,16 @@ class ApiService
 
     public function fetchData(string $apiUrl): array
     {
-        try {
-            $response = $this->client->request('GET', $apiUrl, [
-                'headers' => [
-                    'Accept' => 'application/json',
-                ],
-            ]);
+        $response = $this->client->request('GET', $apiUrl, [
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ]);
 
-            $json = $response->getBody()->getContents();
+        $json = $response->getBody()->getContents();
 
-            if (!json_validate($json)) {
-                throw new \Exception('Json response is not valid');
-            }
-        } catch (GuzzleException $e) {
-            return ['error' => $e->getMessage()];
+        if (!json_validate($json)) {
+            throw new \Exception('Json response is not valid');
         }
         return [$response->getStatusCode(), $json];
     }
