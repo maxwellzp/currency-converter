@@ -12,13 +12,14 @@ class BinanceProvider implements PriceProviderInterface
 
     public function __construct(private ApiService $apiService)
     {
+
     }
 
     /**
      * @return array
      * @throws \Exception
      */
-    public function getPrices(): array
+    public function getMarketRates(): array
     {
         [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
@@ -28,7 +29,7 @@ class BinanceProvider implements PriceProviderInterface
      * @param string $json
      * @return array
      */
-    public function parsingResponse(string $json): array
+    private function parsingResponse(string $json): array
     {
         $result = [];
         $rate = json_decode($json, true);

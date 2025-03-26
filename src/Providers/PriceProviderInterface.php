@@ -6,8 +6,7 @@ namespace App\Providers;
 
 interface PriceProviderInterface
 {
-    public function getPrices(): array;
-    public function parsingResponse(string $json): array;
+    public function getMarketRates(): array;
     public function getName(): string;
     public function getAvailablePairs(): array;
 }

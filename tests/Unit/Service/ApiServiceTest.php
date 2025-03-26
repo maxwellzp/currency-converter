@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 class ApiServiceTest extends TestCase
 {
     private ApiService $apiService;
+    private const API_URL = 'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT';
     protected function setUp(): void
     {
         parent::setUp();
@@ -28,9 +29,7 @@ class ApiServiceTest extends TestCase
         $guzzleClient = $this->createGuzzleClient(200, ProviderResponse::BINANCE);
         $this->apiService = new ApiService($guzzleClient);
 
-        [$statusCode, $json] = $this->apiService->fetchData(
-            'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'
-        );
+        [$statusCode, $json] = $this->apiService->fetchData(self::API_URL);
 
         $this->assertEquals(200, $statusCode);
         $this->assertNotEmpty($json);
@@ -56,5 +55,14 @@ class ApiServiceTest extends TestCase
 
         $handlerStack = HandlerStack::create($mock);
         return new Client(['handler' => $handlerStack]);
+    }
+
+    public function testFetchDataWithInvalidJsonThrowsException()
+    {
+        $guzzleClient = $this->createGuzzleClient(200, 'not valid json');
+        $this->apiService = new ApiService($guzzleClient);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Json response is not valid');
+        $this->apiService->fetchData(self::API_URL);
     }
 }

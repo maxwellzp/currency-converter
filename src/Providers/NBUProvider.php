@@ -19,7 +19,7 @@ class NBUProvider implements PriceProviderInterface
      * @return array
      * @throws \Exception
      */
-    public function getPrices(): array
+    public function getMarketRates(): array
     {
         [$code, $json] = $this->apiService->fetchData(self::API_URL);
         return $this->parsingResponse($json);
