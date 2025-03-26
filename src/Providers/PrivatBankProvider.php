@@ -11,14 +11,13 @@ class PrivatBankProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=5';
 
-    public function __construct(private ApiService $apiService)
+    public function __construct(private readonly ApiService $apiService)
     {
-
     }
 
     /**
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function getPrices(): array
     {

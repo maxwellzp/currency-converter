@@ -14,15 +14,12 @@ use App\Service\ApiService;
 use App\Service\PriceUpdaterService;
 use App\Tests\Unit\Providers\ProviderResponse;
 use App\Utils\CurrencyHelper;
-use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use App\Service\CurrencyConverterService;
 use App\Service\RedisService;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Predis\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -57,9 +54,6 @@ class CurrencyUpdaterCommandTest extends KernelTestCase
         );
 
         self::getContainer()->set(PriceUpdaterService::class, $priceUpdaterService);
-
-
-
 
         $command = $application->find('app:currency-updater');
         $commandTester = new CommandTester($command);

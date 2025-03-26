@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Scheduler\Handler;
 
-use App\Providers\PriceProviderInterface;
+use App\Providers\BinanceProvider;
+use App\Providers\MonobankProvider;
+use App\Providers\NBUProvider;
+use App\Providers\PrivatBankProvider;
 use App\Scheduler\Message\ProviderMessage;
 use App\Service\PriceUpdaterService;
-use GuzzleHttp\Client as GuzzleClient;
-use Predis\Client as PredisClient;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -15,21 +18,25 @@ class ProviderHandler
 {
     public function __construct(
         private readonly LoggerInterface $logger,
+        private PriceUpdaterService $priceUpdater,
+        private BinanceProvider $binanceProvider,
+        private MonobankProvider $monobankProvider,
+        private NBUProvider $nbuProvider,
+        private PrivatBankProvider $privatBankProvider,
     ) {
     }
 
     public function __invoke(ProviderMessage $test): void
     {
-        $guzzleClient = new GuzzleClient();
-        $predisClient = new PredisClient([
-            'host' => $_ENV['REDIS_HOST'],
-        ]);
-        $className = $test->getClassName();
-        /** @var PriceProviderInterface $provider */
-        $provider = new $className($guzzleClient);
-        $priceUpdater = new PriceUpdaterService($predisClient);
-        $priceUpdater->updatePrice($provider);
+        $provider = match ($test->getClassName()) {
+            BinanceProvider::class => $this->binanceProvider,
+            MonobankProvider::class => $this->monobankProvider,
+            NBUProvider::class => $this->nbuProvider,
+            PrivatBankProvider::class => $this->privatBankProvider,
+            default => throw new \Exception('Unexpected provider class: ' . $test->getClassName()),
+        };
 
+        $this->priceUpdater->updatePrice($provider);
         $this->logger->info('Service name: ' . $test->getClassName());
     }
 }

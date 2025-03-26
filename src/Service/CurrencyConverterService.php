@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use Predis\ClientInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-
 class CurrencyConverterService
 {
     public function __construct(
         private RedisService $redisService,
-    )
-    {
-
+    ) {
     }
 
     /**

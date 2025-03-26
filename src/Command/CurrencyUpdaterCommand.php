@@ -19,8 +19,7 @@ class CurrencyUpdaterCommand extends Command
 {
     public function __construct(
         private readonly PriceUpdaterService $priceUpdaterService
-    )
-    {
+    ) {
         parent::__construct();
     }
 

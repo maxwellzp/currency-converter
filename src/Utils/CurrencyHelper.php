@@ -10,7 +10,6 @@ class CurrencyHelper
 {
     public function __construct(private ISO4217 $iso4217)
     {
-
     }
 
     public function getCurrencyAlpha3ByCode(int $currency): string

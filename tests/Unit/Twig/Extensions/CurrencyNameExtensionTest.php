@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Twig\Extensions;
 
 use Alcohol\ISO4217;

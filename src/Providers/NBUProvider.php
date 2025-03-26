@@ -11,15 +11,13 @@ class NBUProvider implements PriceProviderInterface
 {
     public const API_URL = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
-    public function __construct(private ApiService $apiService)
+    public function __construct(private readonly ApiService $apiService)
     {
-
     }
-
 
     /**
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function getPrices(): array
     {

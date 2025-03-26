@@ -28,7 +28,9 @@ class ApiServiceTest extends TestCase
         $guzzleClient = $this->createGuzzleClient(200, ProviderResponse::BINANCE);
         $this->apiService = new ApiService($guzzleClient);
 
-        [$statusCode, $json] = $this->apiService->fetchData('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
+        [$statusCode, $json] = $this->apiService->fetchData(
+            'https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT'
+        );
 
         $this->assertEquals(200, $statusCode);
         $this->assertNotEmpty($json);

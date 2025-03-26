@@ -18,8 +18,7 @@ class CurrencyFormConfigurator
         private MonobankProvider $monobankProvider,
         private NBUProvider $nbuProvider,
         private PrivatBankProvider $privatBankProvider,
-    )
-    {
+    ) {
         $this->currencyList = new CurrencyList([
             $this->binanceProvider,
             $this->monobankProvider,

@@ -12,12 +12,11 @@ class BinanceProvider implements PriceProviderInterface
 
     public function __construct(private ApiService $apiService)
     {
-
     }
 
     /**
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
      */
     public function getPrices(): array
     {

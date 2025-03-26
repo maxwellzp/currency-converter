@@ -99,4 +99,3 @@ class CurrencyConverterCommandTest extends KernelTestCase
         return $predisClient;
     }
 }
-

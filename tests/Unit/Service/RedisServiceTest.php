@@ -64,5 +64,4 @@ class RedisServiceTest extends TestCase
         $actualResult = $this->redisService->get('key2');
         $this->assertNull($actualResult);
     }
-
 }

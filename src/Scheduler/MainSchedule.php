@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Scheduler;
 
 use App\Scheduler\Message\ProviderMessage;
@@ -21,9 +23,9 @@ final class MainSchedule implements ScheduleProviderInterface
     {
         return (new Schedule())
             ->add(
-                RecurringMessage::every('2 minutes', new ProviderMessage('App\Providers\NBUProvider')),
-                RecurringMessage::every('3 minutes', new ProviderMessage('App\Providers\BinanceProvider')),
-                RecurringMessage::every('4 minutes', new ProviderMessage('App\Providers\PrivatBankProvider')),
+                RecurringMessage::every('24 hours', new ProviderMessage('App\Providers\NBUProvider')),
+                RecurringMessage::every('5 minutes', new ProviderMessage('App\Providers\BinanceProvider')),
+                RecurringMessage::every('24 hours', new ProviderMessage('App\Providers\PrivatBankProvider')),
                 RecurringMessage::every('5 minutes', new ProviderMessage('App\Providers\MonobankProvider')),
             )
             ->stateful($this->cache);
