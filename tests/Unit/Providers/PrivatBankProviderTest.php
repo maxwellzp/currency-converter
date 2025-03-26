@@ -53,5 +53,4 @@ class PrivatBankProviderTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         return new Client(['handler' => $handlerStack]);
     }
-
 }

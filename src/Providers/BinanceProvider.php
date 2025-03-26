@@ -12,7 +12,6 @@ class BinanceProvider implements PriceProviderInterface
 
     public function __construct(private ApiService $apiService)
     {
-
     }
 
     /**

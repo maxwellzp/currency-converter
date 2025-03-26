@@ -27,7 +27,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 #[CoversClass(CurrencyUpdaterCommand::class)]
 class CurrencyUpdaterCommandTest extends KernelTestCase
 {
-    public function testSomething(): void
+    public function testExecuteWorksCorrectly(): void
     {
         self::bootKernel();
         $application = new Application(self::$kernel);

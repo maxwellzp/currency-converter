@@ -53,5 +53,4 @@ class BinanceProviderTest extends TestCase
         $handlerStack = HandlerStack::create($mock);
         return new Client(['handler' => $handlerStack]);
     }
-
 }

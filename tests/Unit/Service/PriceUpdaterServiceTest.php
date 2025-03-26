@@ -18,9 +18,11 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Predis\Client;
 
+#[CoversClass(PriceUpdaterService::class)]
 class PriceUpdaterServiceTest extends TestCase
 {
     private PriceUpdaterService $priceUpdaterService;
