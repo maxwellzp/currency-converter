@@ -35,13 +35,15 @@ class PriceUpdaterService
         }
     }
 
-    public function updatePrice(PriceProviderInterface $provider): void
+    private function updatePrice(PriceProviderInterface $provider): void
     {
-        $prices = $provider->getPrices();
+        $marketRates = $provider->getMarketRates();
 
-        foreach ($prices as $price) {
-            [$pair, $price] = $price;
-            $this->redisService->set($pair, (string)$price);
+        foreach ($provider->getAvailablePairs() as $market) {
+            if (array_key_exists($market, $marketRates)) {
+                [$pair, $price] = $marketRates[$market];
+                $this->redisService->set($pair, (string)$price);
+            }
         }
     }
 }

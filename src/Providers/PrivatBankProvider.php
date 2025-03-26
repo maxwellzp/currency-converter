@@ -37,7 +37,7 @@ class PrivatBankProvider implements PriceProviderInterface
         foreach ($rates as $rate) {
             $pair = sprintf("%s-%s", $rate['ccy'], $rate['base_ccy']);
             $price = ($rate['buy'] + $rate['sale']) / 2;
-            $result[] = [$pair, $price];
+            $result[$pair] = [$pair, $price];
         }
         return $result;
     }

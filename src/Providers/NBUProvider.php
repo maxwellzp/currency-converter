@@ -37,7 +37,7 @@ class NBUProvider implements PriceProviderInterface
         foreach ($rates as $rate) {
             $pair = sprintf("%s-%s", $rate['cc'], 'UAH');
             $price = $rate['rate'];
-            $result[] = [$pair, $price];
+            $result[$pair] = [$pair, $price];
         }
         return $result;
     }

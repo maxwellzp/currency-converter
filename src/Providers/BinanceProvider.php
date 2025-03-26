@@ -34,7 +34,7 @@ class BinanceProvider implements PriceProviderInterface
         $result = [];
         $rate = json_decode($json, true);
 
-        $result[] = ["BTC-USD", $rate['price']];
+        $result["BTC-USD"] = ["BTC-USD", $rate['price']];
 
         return $result;
     }

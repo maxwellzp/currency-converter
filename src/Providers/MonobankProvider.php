@@ -31,7 +31,7 @@ class MonobankProvider implements PriceProviderInterface
 
             $price = $this->getPriceFromJson($rate);
 
-            $result[] = [$marketPair, $price];
+            $result[$marketPair] = [$marketPair, $price];
         }
         return $result;
     }
