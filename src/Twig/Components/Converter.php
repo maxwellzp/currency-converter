@@ -73,9 +73,7 @@ class Converter
         return $this->formConfigurator->getCurrencyToList($this->currencyFrom);
     }
 
-    /**
-     * @return string
-     */
+    #[LiveAction]
     public function getResultString(): string
     {
         return sprintf("%s %s", $this->calculateConversion(), $this->currencyTo);
