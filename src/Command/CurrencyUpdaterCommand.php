@@ -18,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CurrencyUpdaterCommand extends Command
 {
     public function __construct(
-        private PriceUpdaterService $priceUpdaterService
+        private readonly PriceUpdaterService $priceUpdaterService
     )
     {
         parent::__construct();
