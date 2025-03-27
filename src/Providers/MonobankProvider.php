@@ -18,7 +18,7 @@ class MonobankProvider implements PriceProviderInterface
 
     /**
      * @param string $json
-     * @return array
+     * @return array<string,mixed>
      * @throws \Exception
      */
     public function parsingResponse(string $json): array
@@ -37,7 +37,7 @@ class MonobankProvider implements PriceProviderInterface
     }
 
     /**
-     * @return array
+     * @return array<string,mixed>
      * @throws \Exception
      */
     public function getMarketRates(): array
@@ -55,7 +55,7 @@ class MonobankProvider implements PriceProviderInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getAvailablePairs(): array
     {
@@ -171,11 +171,11 @@ class MonobankProvider implements PriceProviderInterface
     }
 
     /**
-     * @param $currencyCodeA
-     * @param $currencyCodeB
+     * @param int $currencyCodeA
+     * @param int $currencyCodeB
      * @return string
      */
-    public function getMarketPairFromCurrencies($currencyCodeA, $currencyCodeB)
+    public function getMarketPairFromCurrencies(int $currencyCodeA, int $currencyCodeB): string
     {
         $currencyA = $this->currencyHelper->getCurrencyAlpha3ByCode($currencyCodeA);
         $currencyB = $this->currencyHelper->getCurrencyAlpha3ByCode($currencyCodeB);
@@ -184,11 +184,11 @@ class MonobankProvider implements PriceProviderInterface
     }
 
     /**
-     * @param array $rateData
-     * @return float|int|mixed
+     * @param array<string,float> $rateData
+     * @return float
      * @throws \Exception
      */
-    public function getPriceFromJson(array $rateData)
+    public function getPriceFromJson(array $rateData): float
     {
         if (array_key_exists('rateBuy', $rateData) && array_key_exists('rateSell', $rateData)) {
             $price = ($rateData['rateBuy'] * $rateData['rateSell']) / 2;

@@ -11,8 +11,14 @@ class CurrencyList
 {
     /** @var PriceProviderInterface[] $providers */
     private array $providers;
+    /**
+     * @var array<string,CurrencyConfig>
+     */
     private array $configurations = [];
 
+    /**
+     * @param PriceProviderInterface[] $providers
+     */
     public function __construct(array $providers)
     {
         $this->providers = $providers;
@@ -20,6 +26,9 @@ class CurrencyList
         $this->createCurrencyConfigs($markets);
     }
 
+    /**
+     * @return string[]
+     */
     public function getAllMarkets(): array
     {
         $markets = [];
@@ -30,6 +39,9 @@ class CurrencyList
         return $markets;
     }
 
+    /**
+     * @return array<string,string>
+     */
     public function getCurrencyFromList(): array
     {
         $markets = $this->getAllMarkets();
@@ -42,16 +54,25 @@ class CurrencyList
         return $currencies;
     }
 
+    /**
+     * @param string $currency
+     * @return string[]
+     * @throws \Exception
+     */
     public function getCurrencyToList(string $currency): array
     {
         /** @var CurrencyConfig $currencyConfig */
         $currencyConfig = $this->configurations[$currency];
-        if ($currencyConfig === null) {
+        if ($currencyConfig == null) {
             throw new \Exception('Currency not found in configurations: ' . $currency);
         }
         return $currencyConfig->getCounterCurrencies();
     }
 
+    /**
+     * @param string[] $markets
+     * @return void
+     */
     public function createCurrencyConfigs(array $markets): void
     {
         $this->direct($markets);
@@ -59,17 +80,28 @@ class CurrencyList
         $this->cross($markets);
     }
 
+    /**
+     * @param string $market
+     * @return string[]
+     */
     public function transformMarketToCurrencies(string $market): array
     {
         return explode('-', $market);
     }
 
+    /**
+     * @return array|PriceProviderInterface[]
+     */
     public function getProviders(): array
     {
         return $this->providers;
     }
 
-    public function direct(array $markets)
+    /**
+     * @param string[] $markets
+     * @return void
+     */
+    public function direct(array $markets): void
     {
         foreach ($markets as $market) {
             [$currencyA, $currencyB] = $this->transformMarketToCurrencies($market);
@@ -84,7 +116,11 @@ class CurrencyList
         }
     }
 
-    public function invers(array $markets)
+    /**
+     * @param string[] $markets
+     * @return void
+     */
+    public function invers(array $markets): void
     {
         foreach ($markets as $market) {
             [$currencyA, $currencyB] = $this->transformMarketToCurrencies($market);
@@ -99,7 +135,11 @@ class CurrencyList
         }
     }
 
-    public function cross(array $markets)
+    /**
+     * @param string[] $markets
+     * @return void
+     */
+    public function cross(array $markets): void
     {
         $uniqueMarkets = array_unique($markets);
         $resultPairs = [];
@@ -135,26 +175,47 @@ class CurrencyList
         }
     }
 
-    public function createCurrencyConfig(string $baseCurrency, string $counterCurrency)
+    /**
+     * @param string $baseCurrency
+     * @param string $counterCurrency
+     * @return CurrencyConfig
+     */
+    public function createCurrencyConfig(string $baseCurrency, string $counterCurrency): CurrencyConfig
     {
         return new CurrencyConfig($baseCurrency, $counterCurrency);
     }
 
+    /**
+     * @param string $currency
+     * @return bool
+     */
     public function isCurrencyConfigExists(string $currency): bool
     {
         return array_key_exists($currency, $this->configurations);
     }
 
+    /**
+     * @param string $currency
+     * @return CurrencyConfig
+     */
     public function getCurrencyConfigByCurrencyId(string $currency): CurrencyConfig
     {
         return $this->configurations[$currency];
     }
 
+    /**
+     * @param string $currency
+     * @param CurrencyConfig $currencyConfig
+     * @return void
+     */
     public function setCurrencyConfigByCurrencyId(string $currency, CurrencyConfig $currencyConfig): void
     {
         $this->configurations[$currency] = $currencyConfig;
     }
 
+    /**
+     * @return array<string,CurrencyConfig>
+     */
     public function getConfigurations(): array
     {
         return $this->configurations;

@@ -55,21 +55,21 @@ class CurrencyConverterServiceTest extends TestCase
                 if ($invokedCount->numberOfInvocations() === 1) {
                     // the first call
                     // argument: AAA-ZZZ
-                    var_dump(["The first call", $marketPair]);
+//                    var_dump(["The first call", $marketPair]);
                     return null;
                 }
 
                 if ($invokedCount->numberOfInvocations() === 2) {
                     // the second call
                     // argument: ZZZ-AAA
-                    var_dump(["The second call", $marketPair]);
+//                    var_dump(["The second call", $marketPair]);
                     return null;
                 }
 
                 if ($invokedCount->numberOfInvocations() === 3) {
                     // the third call
                     // argument: AAA-USD
-                    var_dump(["The third call", $marketPair]);
+//                    var_dump(["The third call", $marketPair]);
                 }
             });
         ;
@@ -142,7 +142,7 @@ class CurrencyConverterServiceTest extends TestCase
 
     public function testIndirectExchangeRateWorksCorrectly()
     {
-        $expectedPrice = '83659.99000000';
+        $currentRate = '83659.99000000';
         $predisClient = $this->createMock(Client::class);
         $predisClient
             ->expects($this->once())
@@ -151,30 +151,55 @@ class CurrencyConverterServiceTest extends TestCase
                 $this->equalTo('get'),
                 $this->equalTo(['BTC-USD'])
             )
-            ->willReturn($expectedPrice);
+            ->willReturn($currentRate);
         $redisService = new RedisService($predisClient);
         $service = new CurrencyConverterService($redisService);
         $actualRate = $service->indirectExchangeRate('BTC', 'USD');
         $this->assertNotNull($actualRate);
         $this->assertIsString($actualRate);
+        $expectedRate = strval(1 / $currentRate);
+        $this->assertSame($expectedRate, $actualRate);
     }
 
     public function testCrossExchangeRateWorksCorrectly()
     {
-        $expectedPrice = '83659.99000000';
+        $btcToUsd = '83331.03';
+        $usdToUah = '41.43';
         $predisClient = $this->createMock(Client::class);
+        $invokedCount = $this->exactly(2);
+
         $predisClient
-            ->expects($this->once())
+            ->expects($invokedCount)
             ->method('__call')
             ->with(
                 $this->equalTo('get'),
-                $this->equalTo(['BTC-USD'])
             )
-            ->willReturn($expectedPrice);
+            ->willReturnCallback(function ($parameters, $commandArguments) use ($invokedCount, $btcToUsd, $usdToUah) {
+
+                $marketPair = $commandArguments[0];
+
+                if ($invokedCount->numberOfInvocations() === 1) {
+                    // the first call
+                    // argument: BTC-USD
+//                    var_dump(["The first call", $marketPair]);
+                    return $btcToUsd;
+                }
+
+                if ($invokedCount->numberOfInvocations() === 2) {
+                    // the second call
+                    // argument: USD-UAH
+//                    var_dump(["The second call", $marketPair]);
+                    return $usdToUah;
+                }
+            });
+        ;
+
         $redisService = new RedisService($predisClient);
         $service = new CurrencyConverterService($redisService);
-        $actualRate = $service->crossExchangeRate('BTC', 'BTC');
+        $actualRate = $service->crossExchangeRate('BTC', 'UAH');
         $this->assertNotNull($actualRate);
         $this->assertIsFloat($actualRate);
+        $expectedRate = $btcToUsd * $usdToUah;
+        $this->assertSame($expectedRate, $actualRate);
     }
 }

@@ -16,7 +16,7 @@ class PrivatBankProvider implements PriceProviderInterface
     }
 
     /**
-     * @return array
+     * @return array<string,mixed>
      * @throws \Exception
      */
     public function getMarketRates(): array
@@ -27,7 +27,7 @@ class PrivatBankProvider implements PriceProviderInterface
 
     /**
      * @param string $json
-     * @return array
+     * @return array<string,mixed>
      */
     public function parsingResponse(string $json): array
     {

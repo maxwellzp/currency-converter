@@ -7,6 +7,10 @@ namespace App\Model;
 class CurrencyConfig
 {
     private string $baseCurrency;
+
+    /**
+     * @var array<string>
+     */
     private array $counterCurrencies;
 
     public function __construct(string $baseCurrency, string $counterCurrency)
@@ -22,11 +26,17 @@ class CurrencyConfig
         }
     }
 
+    /**
+     * @return string
+     */
     public function getBaseCurrency(): string
     {
         return $this->baseCurrency;
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getCounterCurrencies(): array
     {
         return $this->counterCurrencies;

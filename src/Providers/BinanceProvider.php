@@ -15,7 +15,7 @@ class BinanceProvider implements PriceProviderInterface
     }
 
     /**
-     * @return array
+     * @return array<string,mixed>
      * @throws \Exception
      */
     public function getMarketRates(): array
@@ -26,7 +26,7 @@ class BinanceProvider implements PriceProviderInterface
 
     /**
      * @param string $json
-     * @return array
+     * @return array<string,mixed>
      */
     private function parsingResponse(string $json): array
     {

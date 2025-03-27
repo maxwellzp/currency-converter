@@ -49,17 +49,20 @@ class Converter
         $result = 0;
         try {
             $result = $this->currencyConverterService->convert(
-                $this->amount,
+                strval($this->amount),
                 $this->currencyFrom,
                 $this->currencyTo,
             );
         } catch (\Exception $exception) {
             $this->logger->critical($exception->getMessage());
         }
-        return $result;
+        return strval($result);
     }
 
 
+    /**
+     * @return array<string,string>
+     */
     #[LiveAction]
     public function getFromCurrencies(): array
     {
@@ -67,12 +70,19 @@ class Converter
     }
 
 
+    /**
+     * @return array<string,string>
+     */
     #[LiveAction]
     public function getToCurrencies(): array
     {
         return $this->formConfigurator->getCurrencyToList($this->currencyFrom);
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     #[LiveAction]
     public function getResultString(): string
     {

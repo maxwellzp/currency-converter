@@ -16,6 +16,11 @@ class ApiService
         $this->client = $client;
     }
 
+    /**
+     * @param string $apiUrl
+     * @return array{int,string}
+     * @throws GuzzleException
+     */
     public function fetchData(string $apiUrl): array
     {
         $response = $this->client->request('GET', $apiUrl, [

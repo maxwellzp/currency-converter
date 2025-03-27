@@ -35,7 +35,7 @@ class PriceUpdaterService
         }
     }
 
-    private function updatePrice(PriceProviderInterface $provider): void
+    public function updatePrice(PriceProviderInterface $provider): void
     {
         $marketRates = $provider->getMarketRates();
 

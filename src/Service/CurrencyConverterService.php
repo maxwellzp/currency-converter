@@ -89,7 +89,7 @@ class CurrencyConverterService
             return null;
         }
 
-        return $firstPairPrice * $secondPairPrice; //83331.03 × 41.43 = 3452404.5729
+        return floatval($firstPairPrice) * floatval($secondPairPrice); //83331.03 × 41.43 = 3452404.5729
     }
 
     /**
@@ -100,10 +100,13 @@ class CurrencyConverterService
     public function indirectExchangeRate(string $currencyFrom, string $currencyTo): null|string
     {
         // We want to receive USD-BTC price
-        // Approximately = 0.0000121117
-        // $currencyFrom = USD
-        // $currencyTo = BTC
-        $key = sprintf('%s-%s', $currencyTo, $currencyFrom);
-        return $this->fetchFromRedis($key);
+        // BTC-USD = 87,541.83
+        // USD-BTC = 1 / 87,541.83 = 0.00001142
+        $key = sprintf('%s-%s', $currencyFrom, $currencyTo);
+        $directRate = $this->fetchFromRedis($key);
+        if ($directRate === null) {
+            return null;
+        }
+        return strval((1 / floatval($directRate)));
     }
 }

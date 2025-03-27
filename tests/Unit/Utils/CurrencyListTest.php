@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Utils;
 
+use Alcohol\ISO4217;
 use App\Model\CurrencyConfig;
 use App\Providers\BinanceProvider;
 use App\Providers\MonobankProvider;
 use App\Providers\NBUProvider;
 use App\Providers\PriceProviderInterface;
 use App\Providers\PrivatBankProvider;
+use App\Service\ApiService;
+use App\Utils\CurrencyHelper;
 use App\Utils\CurrencyList;
-use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -24,12 +30,13 @@ class CurrencyListTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $guzzle = new GuzzleClient();
+
+        $apiService = new ApiService($this->createGuzzleClient(200, ''));
         $this->currencyList = new CurrencyList([
-            new NBUProvider($guzzle),
-            new BinanceProvider($guzzle),
-            new PrivatBankProvider($guzzle),
-            new MonobankProvider($guzzle),
+            new NBUProvider($apiService),
+            new BinanceProvider($apiService),
+            new PrivatBankProvider($apiService),
+            new MonobankProvider($apiService, new CurrencyHelper(new ISO4217())),
         ]);
     }
 
@@ -103,5 +110,15 @@ class CurrencyListTest extends TestCase
         $this->assertIsArray($providers);
         $this->assertNotEmpty($providers);
         $this->assertContainsOnlyInstancesOf(PriceProviderInterface::class, $providers);
+    }
+
+    public function createGuzzleClient(int $code, string $response)
+    {
+        $mock = new MockHandler([
+            new Response($code, [], $response)
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        return new Client(['handler' => $handlerStack]);
     }
 }
