@@ -1,4 +1,6 @@
 {
+    "name": "maxwellzp/currency-converter",
+    "description": "Currency converter application written in PHP.",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
