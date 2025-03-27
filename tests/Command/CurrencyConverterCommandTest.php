@@ -31,7 +31,7 @@ class CurrencyConverterCommandTest extends KernelTestCase
         $actualString = sprintf("Conversion result: %s %s", $actualResult, $to);
 
         $expectedString = sprintf("Conversion result: %s %s", $expectedConversionResult, $to);
-
+        self::getContainer()->set(CurrencyConverterService::class, $currencyConverterService);
         $command = $application->find('app:currency-converter');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
@@ -89,7 +89,7 @@ class CurrencyConverterCommandTest extends KernelTestCase
     {
         $predisClient = $this->createMock(Client::class);
         $predisClient
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('__call')
             ->with(
                 $this->equalTo('get'),
